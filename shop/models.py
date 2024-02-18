@@ -34,8 +34,8 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True)
     
 
-    def no_of_ratings(self):
-        ratings = Rating.objects.filter(meal=self)
+    def nom_of_ratings(self):
+        ratings = Rating.objects.filter(product=self)
         return len(ratings)
     
     def avg_rating(self):
@@ -71,10 +71,15 @@ class Rating(models.Model):
     stars = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
 
     def __str__(self) -> str:
-        return str(f"Product : {self.product}   |  User = {self.user}")
+        return str(f"  User : {self.user} | Product : {self.product}  |   Stars : {self.stars}")
     
     class Meta:
         unique_together = (('user','product'),)
         index_together = (('user','product'),)
 
 
+class ProductComments(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name = 'product_comments')
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
