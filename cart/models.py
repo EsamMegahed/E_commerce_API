@@ -9,10 +9,19 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=200, null=True)
 
-class Cart(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    products = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='cart_products')
-    total_items = models.IntegerField(default=0)
-    total_price = models.DecimalField(max_digits=5, decimal_places=2,default=0)
+class OrderItems(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='cart_orders')
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='cart_products')
+    quantity = models.IntegerField(default=0, null=True, blank=True)
+    
 
     
+    @property
+    def get_total(self):
+        total = self.product.price * self.quantity
+
+        return total
+    
+    class Cart(models.Model):
+        total_items = models.IntegerField(default=0)
+        total_price = models.DecimalField(max_digits=5, decimal_places=2,default=0)
