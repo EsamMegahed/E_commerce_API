@@ -6,10 +6,16 @@ class ProductCommentsserializer(serializers.ModelSerializer):
     class Meta:
         model = ProductComments
         fields = '__all__'
-
+        
 class ProductSerializer(serializers.ModelSerializer):
     product_comments = ProductCommentsserializer(many=True)
     class Meta:
         model = Product
         fields = ['id','category','name','slug','image','discription','price','available','created','updated','nom_of_ratings','avg_rating','product_comments']
         
+
+
+class ProductRateingializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = '__all__'

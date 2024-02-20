@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator,MaxValueValidator
+from mptt.models import TreeForeignKey,MPTTModel
 # Create your models here.
 
 class Category(models.Model):
@@ -83,3 +84,7 @@ class ProductComments(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name = 'product_comments')
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    #parent = TreeForeignKey('self',on_delete = models.CASCADE,blank=True,null=True)
+    #class MPTTMeta:
+        # If changing the order - MPTT needs the programmer to go into console and do Comment.objects.rebuild()
+        #order_insertion_by = ['-created']
